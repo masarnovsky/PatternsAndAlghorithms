@@ -1,5 +1,8 @@
 package alghorithms.trees;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class BinaryTree {
     private Node root;
 
@@ -63,8 +66,9 @@ public class BinaryTree {
             }
 
             if (current.left != null && current.right != null) {
-                current.data = findSmalelstValue(current.right);
-                current.right = removeRecursive(current.right, data);
+                int smallestValue = findSmallestValue(current.right);
+                current.data = smallestValue;
+                current.right = removeRecursive(current.right, smallestValue);
                 return current;
             }
         }
@@ -72,8 +76,65 @@ public class BinaryTree {
         return current.data > data ? removeRecursive(current.left, data) : removeRecursive(current.right, data);
     }
 
-    private int findSmalelstValue(Node current) {
-       return root.left == null ? root.data : findSmalelstValue(root.left);
+    private int findSmallestValue(Node node) {
+        return node.left == null ? node.data : findSmallestValue(node.left);
+    }
+
+    public void inOrderTraversal() {
+        inOrderTraversal(root);
+        postOrderTraversal(root);
+    }
+
+    public void preOrderTraversal() {
+        preOrderTraversal(root);
+    }
+
+    public void postOrderTraversal() {
+        postOrderTraversal(root);
+    }
+
+    private void inOrderTraversal(Node node) {
+        if (node != null) {
+            inOrderTraversal(node.left);
+            System.out.println(node.data);
+            inOrderTraversal(node.right);
+        }
+    }
+
+    private void preOrderTraversal(Node node) {
+        if (node != null) {
+            System.out.println(node.data);
+            preOrderTraversal(node.left);
+            preOrderTraversal(node.right);
+        }
+    }
+
+    private void postOrderTraversal(Node node) {
+        if (node != null) {
+            postOrderTraversal(node.left);
+            postOrderTraversal(node.right);
+            System.out.println(node.data);
+        }
+    }
+
+    public void traverseLevelOrder() {
+        if (root == null)
+            return;
+
+        Queue<Node> nodes = new LinkedList<>();
+        nodes.add(root);
+
+        while (!nodes.isEmpty()) {
+            Node node = nodes.remove();
+            System.out.println(node.data);
+
+            if (node.left != null) {
+                nodes.add(node.left);
+            }
+            if (node.right != null) {
+                nodes.add(node.right);
+            }
+        }
     }
 }
 
